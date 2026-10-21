@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NORMAL PAPA — Password</title>
+<style>
+:root{--bg:#07070b;--surface:#101017;--card:#16161f;--input:#1c1c27;--ink:#f4f1ea;--ink2:#c9c6bf;--muted:#8a8895;--line:#262633;--gold:#f5b942;--gold2:#ff8a3d;--onGold:#1a1206;--glow:rgba(245,185,66,.18);--info:#6674e8;--ok:#10b981;--err:#ef4444}
+[data-theme="light"]{--bg:#f3f1ec;--surface:#fff;--card:#faf8f4;--input:#f0ede7;--ink:#17161c;--ink2:#3b3a45;--muted:#77757f;--line:#e2ded5;--gold:#d98a0b;--gold2:#e8590c;--onGold:#fff;--glow:rgba(217,138,11,.16);--ok:#059669;--err:#dc2626}
+*{margin:0;padding:0;box-sizing:border-box}
+*{user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
+input,select,textarea{user-select:text;-webkit-user-select:text}
+html{background:var(--bg)}
+body{font-family:'Segoe UI',system-ui,-apple-system,Roboto,sans-serif;background:radial-gradient(900px 420px at 50% -120px,var(--glow),transparent),var(--bg);color:var(--ink);min-height:100vh;padding:18px 14px 48px;display:flex;align-items:center;justify-content:center}
+.i{width:1.15em;height:1.15em;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;vertical-align:middle}
+.wrap{max-width:440px;width:100%;margin:0 auto}
+[hidden]{display:none!important}
+
+/* header */
+header{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:18px}
+.brand{display:flex;align-items:center;gap:12px}
+.mark{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;color:var(--onGold);background:linear-gradient(135deg,var(--gold),var(--gold2));box-shadow:0 8px 24px var(--glow);font-size:22px}
+.brand h1{font-size:20px;font-weight:800;letter-spacing:.5px;line-height:1.1}
+.brand span{font-size:12.5px;color:var(--muted)}
+.tools{display:flex;align-items:center;gap:10px}
+.theme{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:16px}
+.switch{position:relative;width:48px;height:26px;display:inline-block}
+.switch input{opacity:0;width:0;height:0}
+.slider{position:absolute;inset:0;background:var(--input);border:1px solid var(--line);border-radius:26px;cursor:pointer}
+.slider::before{content:"";position:absolute;width:18px;height:18px;left:3px;top:3px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold2));transition:transform .25s}
+.switch input:checked+.slider::before{transform:translateX(22px)}
+.switch input:focus-visible+.slider{outline:2px solid var(--gold);outline-offset:2px}
+
+/* instagram tile */
+.ig{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;color:#fff;font-size:18px;flex-shrink:0;background:radial-gradient(circle at 30% 107%,#fdf497 0%,#fdf497 5%,#fd5949 45%,#d6249f 60%,#285AEB 90%)}
+.ig .i{stroke-width:2}
+.ig-pill{display:inline-flex;align-items:center;gap:10px;padding:6px 16px 6px 6px;border-radius:40px;background:var(--surface);border:1px solid var(--line);color:var(--ink);font-weight:700;font-size:13.5px;text-decoration:none;transition:transform .2s,border-color .2s}
+.ig-pill:hover{transform:translateY(-2px);border-color:var(--gold)}
+
+/* panel */
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:26px;padding:32px 24px 26px;box-shadow:0 18px 50px rgba(0,0,0,.18)}
+.panel-title{display:flex;align-items:center;gap:10px;font-size:16px;font-weight:800;margin-bottom:20px;justify-content:center}
+.panel-title .badge{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;color:var(--gold);background:var(--glow);font-size:18px}
+
+/* lock icon */
+.lock-ico{width:74px;height:74px;margin:0 auto 18px;border-radius:50%;display:grid;place-items:center;font-size:32px;color:var(--gold);background:var(--glow);border:1px solid var(--gold);box-shadow:0 0 0 8px var(--glow)}
+.sub{font-size:14px;color:var(--muted);margin-bottom:22px;text-align:center;line-height:1.5}
+.sub b{color:var(--ink);font-weight:700}
+
+/* question */
+.question{font-size:16px;font-weight:700;text-align:center;margin-bottom:18px;line-height:1.4}
+
+/* buttons */
+.btn{width:100%;display:flex;align-items:center;justify-content:center;gap:10px;padding:14px;border-radius:30px;font-weight:800;font-size:15px;cursor:pointer;text-decoration:none;border:0;transition:transform .15s,filter .15s,border-color .2s,background-color .2s}
+.btn:hover{filter:brightness(1.06)}
+.btn:active{transform:scale(.97)}
+.btn:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.btn.gold{color:var(--onGold);background:linear-gradient(135deg,var(--gold),var(--gold2));box-shadow:0 10px 26px var(--glow)}
+.btn.ghost{background:var(--card);color:var(--ink);border:1px solid var(--line)}
+.btn.ghost:hover{border-color:var(--gold)}
+.btn.insta{background:var(--card);color:var(--ink);border:1px solid var(--line);padding:10px 18px 10px 10px;justify-content:flex-start}
+.btn.insta:hover{border-color:var(--gold)}
+.btn.insta .t{flex:1;text-align:center;font-size:14px}
+.btn.insta .ig{width:36px;height:36px;font-size:21px}
+.btn-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:4px}
+
+/* password box */
+.pw-box{display:flex;align-items:center;gap:10px;background:var(--input);border:1px solid var(--line);border-radius:14px;padding:6px 6px 6px 16px;margin-bottom:14px}
+.pw-box .code{flex:1;font-family:'Courier New',monospace;font-size:20px;font-weight:800;letter-spacing:2px;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.copy-btn{display:flex;align-items:center;gap:7px;padding:11px 18px;border-radius:11px;border:0;font-weight:800;font-size:13.5px;cursor:pointer;color:var(--onGold);background:linear-gradient(135deg,var(--gold),var(--gold2));transition:transform .15s,filter .15s;flex-shrink:0}
+.copy-btn:hover{filter:brightness(1.08)}
+.copy-btn:active{transform:scale(.95)}
+.copy-btn.copied{background:var(--ok);color:#fff}
+
+/* divider */
+.or{display:flex;align-items:center;gap:12px;color:var(--muted);font-size:12.5px;margin:18px 0}
+.or::before,.or::after{content:"";flex:1;height:1px;background:var(--line)}
+
+/* toast */
+.toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%);padding:13px 24px;border-radius:14px;font-size:14px;font-weight:600;z-index:99999;max-width:90%;text-align:center;color:#fff;box-shadow:0 10px 40px rgba(0,0,0,.4);animation:up .35s ease}
+.toast-info{background:var(--info)}.toast-success{background:var(--ok)}.toast-error{background:var(--err)}
+@keyframes up{from{opacity:0;transform:translateX(-50%) translateY(24px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+
+@media(max-width:420px){.panel{padding:24px 16px 20px}.brand h1{font-size:17px}.pw-box .code{font-size:17px;letter-spacing:1px}.copy-btn{padding:10px 14px;font-size:12.5px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+<!-- icon set -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="4.5" y="10.5" width="15" height="10.5" rx="3"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/><circle cx="12" cy="15.7" r="1.2" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11z"/></symbol>
+  <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 2.5l2.6 6.9 6.9 2.6-6.9 2.6L12 21.5l-2.6-6.9L2.5 12l6.9-2.6z"/></symbol>
+  <symbol id="i-insta" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8.5" y="8.5" width="12" height="12" rx="2.5"/><path d="M15.5 8.5V6A2.5 2.5 0 0 0 13 3.5H5.5A2 2 0 0 0 3.5 5.5V13A2.5 2.5 0 0 0 6 15.5h2.5"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M4 12.5 9.5 18 20 6.5"/></symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></symbol>
+</svg>
+
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <div class="mark"><svg class="i"><use href="#i-spark"/></svg></div>
+      <div><h1>NORMAL PAPA</h1><span>Password Reveal</span></div>
+    </div>
+    <div class="tools">
+      <div class="theme">
+        <svg class="i"><use href="#i-sun"/></svg>
+        <label class="switch"><input type="checkbox" id="theme-toggle" aria-label="Toggle light theme"><span class="slider"></span></label>
+        <svg class="i"><use href="#i-moon"/></svg>
+      </div>
+    </div>
+  </header>
+
+  <section class="panel">
+    <!-- Step 1: Follow question -->
+    <div id="step-follow">
+      <div class="lock-ico"><svg class="i"><use href="#i-insta"/></svg></div>
+      <div class="panel-title"><span class="badge"><svg class="i"><use href="#i-spark"/></svg></span>Get Access</div>
+      <p class="sub">Before you get the password, please follow<br><b>@normal_ff01</b> on Instagram.</p>
+      <p class="question">Did you follow us?</p>
+      <div class="btn-row">
+        <button class="btn gold" id="btn-yes"><svg class="i"><use href="#i-check"/></svg> Yes</button>
+        <button class="btn ghost" id="btn-no"><svg class="i"><use href="#i-insta"/></svg> No</button>
+      </div>
+    </div>
+
+    <!-- Step 2: Password reveal -->
+    <div id="step-password" hidden>
+      <div class="lock-ico"><svg class="i"><use href="#i-lock"/></svg></div>
+      <div class="panel-title"><span class="badge"><svg class="i"><use href="#i-eye"/></svg></span>Your Password</div>
+      <p class="sub">Copy the password below and use it to unlock the emote bot.</p>
+      
+      <!-- Changed to an input so fallback copy works on mobile -->
+      <div class="pw-box">
+        <input type="text" class="code" id="pw-code" value="normalff" readonly>
+        <button class="copy-btn" id="copy-btn"><svg class="i"><use href="#i-copy"/></svg> Copy</button>
+      </div>
+      
+      <a class="btn gold" href="https://www.instagram.com/normal_ff01?obrf=MThuZ3BhOXE5ZjZtOQ==" target="_blank" rel="noopener noreferrer" style="margin-top:8px;">
+        <svg class="i"><use href="#i-insta"/></svg> Open Instagram
+      </a>
+    </div>
+  </section>
+
+  <a class="btn insta" href="https://www.instagram.com/normal_ff01?obrf=MThuZ3BhOXE5ZjZtOQ==" target="_blank" rel="noopener noreferrer" style="margin-top:14px;">
+    <span class="ig"><svg class="i"><use href="#i-insta"/></svg></span>
+    <span class="t">Follow @normal_ff01</span>
+  </a>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  // ===== Anti-inspection =====
+  document.addEventListener('keydown', function (e) {
+    var k = (e.key || '').toLowerCase();
+    if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (k === 'i' || k === 'j' || k === 'c')) || (e.ctrlKey && (k === 'u' || k === 's' || k === 'p'))) {
+      e.preventDefault(); e.stopPropagation(); return false;
+    }
+  }, true);
+  document.addEventListener('contextmenu', function (e) { e.preventDefault(); }, true);
+  document.addEventListener('dragstart', function (e) { e.preventDefault(); }, true);
+
+  // ===== Password =====
+  var PASSWORD = 'normalff';
+  var INSTAGRAM_URL = 'https://www.instagram.com/normal_ff01?obrf=MThuZ3BhOXE5ZjZtOQ==';
+
+  // ===== Toast =====
+  function showToast(msg, type) {
+    var old = document.querySelector('.toast'); if (old) old.remove();
+    var t = document.createElement('div');
+    t.className = 'toast toast-' + (type || 'info');
+    t.textContent = msg;
+    document.body.appendChild(t);
+    setTimeout(function () { t.style.opacity = '0'; setTimeout(function () { t.remove(); }, 400); }, 3500);
+  }
+
+  // ===== Theme =====
+  var toggle = document.getElementById('theme-toggle');
+  var saved = 'dark';
+  try { saved = localStorage.getItem('normalpapa_theme') || 'dark'; } catch (e) {}
+  document.documentElement.setAttribute('data-theme', saved);
+  toggle.checked = saved === 'light';
+  toggle.addEventListener('change', function () {
+    var th = this.checked ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', th);
+    try { localStorage.setItem('normalpapa_theme', th); } catch (e) {}
+  });
+
+  // ===== Step 1: Follow question =====
+  var stepFollow = document.getElementById('step-follow');
+  var stepPassword = document.getElementById('step-password');
+  var pwInput = document.getElementById('pw-code');
+  var copyBtn = document.getElementById('copy-btn');
+
+  document.getElementById('btn-yes').addEventListener('click', function () {
+    stepFollow.hidden = true;
+    stepPassword.hidden = false;
+    showToast('✅ Thanks for following!', 'success');
+  });
+
+  document.getElementById('btn-no').addEventListener('click', function () {
+    showToast('Opening Instagram...', 'info');
+    window.open(INSTAGRAM_URL, '_blank', 'noopener,noreferrer');
+  });
+
+  // ===== Copy to clipboard (Fixed for Local / Mobile) =====
+  copyBtn.addEventListener('click', function () {
+    var btn = this;
+    
+    // Function to handle success UI
+    var onSuccess = function() {
+      btn.classList.add('copied');
+      btn.innerHTML = '<svg class="i"><use href="#i-check"/></svg> Copied!';
+      showToast('✅ Password copied to clipboard!', 'success');
+      setTimeout(function () {
+        btn.classList.remove('copied');
+        btn.innerHTML = '<svg class="i"><use href="#i-copy"/></svg> Copy';
+      }, 2000);
+    };
+
+    // Try modern clipboard API first
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(PASSWORD).then(onSuccess).catch(function() {
+        fallbackCopy();
+      });
+    } else {
+      fallbackCopy();
+    }
+
+    // Fallback for mobile / local files
+    function fallbackCopy() {
+      try {
+        // Select the text in the input field
+        pwInput.select();
+        pwInput.setSelectionRange(0, 99999); // For mobile devices
+        
+        // Execute copy command
+        var successful = document.execCommand('copy');
+        
+        // Deselect the text
+        pwInput.blur();
+        window.getSelection().removeAllRanges();
+
+        if (successful) {
+          onSuccess();
+        } else {
+          showToast('⚠️ Copy failed. Please long-press the text to copy manually.', 'error');
+        }
+      } catch (err) {
+        showToast('⚠️ Copy failed. Please long-press the text to copy manually.', 'error');
+      }
+    }
+  });
+})();
+</script>
+</body>
+</html>
